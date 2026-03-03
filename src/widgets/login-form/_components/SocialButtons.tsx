@@ -33,38 +33,6 @@ const BaseButton = memo(function BaseButton({
   );
 });
 
-export const KaKaoButton = memo(function KaKaoButton({
-  onClick,
-}: {
-  onClick: () => void;
-}) {
-  return (
-    <BaseButton
-      onClick={onClick}
-      className="bg-[#FAE101]"
-      icon="/assets/icons/kakao-logo.png"
-    >
-      카카오 로그인
-    </BaseButton>
-  );
-});
-
-export const NaverButton = memo(function NaverButton({
-  onClick,
-}: {
-  onClick: () => void;
-}) {
-  return (
-    <BaseButton
-      onClick={onClick}
-      className="bg-[#00BC00] text-white"
-      icon="/assets/icons/naver-logo.png"
-    >
-      네이버 로그인
-    </BaseButton>
-  );
-});
-
 export const GoogleButton = memo(function GoogleButton({
   onClick,
 }: {
