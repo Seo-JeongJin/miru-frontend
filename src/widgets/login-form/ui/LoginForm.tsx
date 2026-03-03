@@ -43,7 +43,7 @@ export default function LoginForm() {
   };
 
   return (
-    <section className="flex flex-col gap-5 w-full max-w-[500px] px-4 mx-auto mt-40 mb-16">
+    <section className="flex flex-col gap-5 w-full max-w-[500px] px-4 mx-auto mb-16">
       {/* 4. 불필요한 익명함수 대신 최적화된 handleLogin 전달 (이전 수업 내용 복습!) [cite: 2026-01-11] */}
       <KaKaoButton onClick={() => handleLogin('kakao')} />
       <GoogleButton onClick={() => handleLogin('google')} />
