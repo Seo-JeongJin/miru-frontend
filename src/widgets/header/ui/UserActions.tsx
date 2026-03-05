@@ -1,15 +1,34 @@
+'use client';
+
 import Link from 'next/link';
 import { Bell, User } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@/entities/auth/useAuth';
+import { authApi } from '@/shared/api/auth';
 
 export const UserActions = () => {
+  const { data: user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    await authApi.logout();
+    queryClient.clear();
+  };
+
   return (
     <div className="flex items-center gap-6">
-      <Link
-        href="/login"
-        className=" font-bold leading-none hover:text-blue-600"
-      >
-        로그인
-      </Link>
+      {user ? (
+        <button
+          onClick={handleLogout}
+          className="font-bold leading-none hover:text-blue-600 cursor-pointer"
+        >
+          로그아웃
+        </button>
+      ) : (
+        <Link href="/login" className="font-bold leading-none hover:text-blue-600">
+          로그인
+        </Link>
+      )}
 
       <button className="flex items-center justify-center p-1 point cursor-pointer">
         <Bell size={24} strokeWidth={2} />
