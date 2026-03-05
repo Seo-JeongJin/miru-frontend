@@ -2,7 +2,7 @@ import axios from 'axios';
 import { APP_EVENTS } from '@/shared/lib/events';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: '',
   withCredentials: true,
 });
 
@@ -30,7 +30,8 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const url = err.config?.url ?? '';
+    if (err.response?.status === 401 && !url.includes('/api/me')) {
       window.dispatchEvent(new Event(APP_EVENTS.AUTH_LOGOUT));
     }
 

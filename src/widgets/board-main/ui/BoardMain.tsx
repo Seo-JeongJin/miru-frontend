@@ -14,7 +14,7 @@ export function BoardMain() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
-  const { data } = usePostsQuery(page);
+  const { data } = usePostsQuery(page - 1);
   const posts = data?.posts ?? [];
   const totalCount = data?.totalCount ?? 0;
 

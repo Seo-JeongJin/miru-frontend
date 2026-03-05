@@ -7,6 +7,8 @@ export const Navigation = () => {
       <NavLink href="/about">자기분석이란?</NavLink>
       <NavLink href="/board">게시판</NavLink>
       <NavLink href="/tips">자기분석 팁</NavLink>
+      <NavLink href="/inquiry">1:1 문의</NavLink>
+      {/* test */}
     </nav>
   );
 };
