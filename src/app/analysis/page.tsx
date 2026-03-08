@@ -1,7 +1,26 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/entities/auth/useAuth';
 import { PageHero } from '@/shared/ui/PageHero';
 import { AnalysisMain } from '@/widgets/analysis-main';
 
 export default function AnalysisPage() {
+  const router = useRouter();
+  const { data: user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      // 로그인 완료 시 localStorage에서 redirect URL 읽기
+      const redirectUrl = localStorage.getItem('redirectAfterLogin');
+      if (redirectUrl) {
+        localStorage.removeItem('redirectAfterLogin');
+        router.push(redirectUrl);
+      }
+    }
+  }, [user, router]);
+
   return (
     <>
       <PageHero

@@ -5,7 +5,7 @@ export const Navigation = () => {
     <nav className="hidden md:flex items-center gap-8">
       <NavLink href="/analysis">자기분석</NavLink>
       <NavLink href="/about">자기분석이란?</NavLink>
-      <NavLink href="/board">게시판</NavLink>
+      <NavLink href="/board">커뮤니티</NavLink>
       <NavLink href="/tips">자기분석 팁</NavLink>
       <NavLink href="/inquiry">1:1 문의</NavLink>
       {/* test */}
