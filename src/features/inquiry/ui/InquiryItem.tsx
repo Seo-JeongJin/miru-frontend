@@ -1,9 +1,10 @@
 'use client'; // useRouter를 쓰려면 필요합니다!
 
-import { useRouter } from 'next/navigation'; // 이동을 위한 도구
+import { useRouter } from 'next/navigation';
 import { Card } from '@/shared/ui/card';
 import { Inquiry } from '../model/types';
 import { Badge } from '@/shared/ui/badge';
+import { RelativeTime } from '@/shared/ui/RelativeTime';
 
 // 1. Omit에서 'id'를 빼지 말고 포함시킵니다.
 export const InquiryItem = ({ id, title, createdAt, status }: Inquiry) => {
@@ -30,7 +31,7 @@ export const InquiryItem = ({ id, title, createdAt, status }: Inquiry) => {
         <h3 className="text-base font-semibold group-hover:text-main transition-colors">
           {title}
         </h3>
-        <span className="text-xs text-gray font-medium">{createdAt}</span>
+        <span className="text-xs text-gray font-medium"><RelativeTime isoString={createdAt} /></span>
       </div>
       <Badge
         className={`w-24 h-8 justify-center py-1 px-0 text-xs font-bold rounded-md border-none ${currentStatus.className}`}

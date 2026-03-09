@@ -3,16 +3,19 @@
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { createInquiry } from '@/features/inquiry/model/api';
 import { Button } from '@/shared/ui/button';
 import { TitleInput } from '@/shared/ui/title-input';
 import { TiptapEditor } from '@/shared/ui/tiptap-editor';
+import { Container } from '@/shared/ui/container';
 import { useModalStore } from '@/app/store/useModalStore';
 
 export function InquiryWriteForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // 1. 모달 제어 함수 가져오기
   const { openModal, closeModal } = useModalStore();
@@ -28,7 +31,8 @@ export function InquiryWriteForm() {
     }
 
     try {
-      await createInquiry({ title, context: content });
+      await createInquiry({ title, content });
+      queryClient.invalidateQueries({ queryKey: ['inquiries-all'] });
       router.push('/inquiry');
     } catch (error) {
       const message = isAxiosError(error) ? error.response?.data?.message : undefined;
@@ -40,18 +44,25 @@ export function InquiryWriteForm() {
     }
   };
   return (
-    <section>
-      <TitleInput value={title} onChange={(e) => setTitle(e.target.value)} />
-      <TiptapEditor
-        placeholder="문의 내용을 입력해주세요"
-        content={content}
-        onChange={setContent}
-      />
-      <div className="flex justify-end w-full mt-4 ">
-        <Button className="cursor-pointer px-8 py-2" onClick={handleSubmit}>
-          올리기
-        </Button>
+    <Container>
+      <div className="py-10">
+        <TitleInput
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="제목을 입력해 주세요"
+        />
+        <div className="border-b border-(--color-border) mb-6" />
+        <TiptapEditor
+          placeholder="문의 내용을 입력해주세요"
+          content={content}
+          onChange={setContent}
+        />
+        <div className="mt-4 flex justify-end">
+          <Button className="cursor-pointer px-8 py-2" onClick={handleSubmit}>
+            올리기
+          </Button>
+        </div>
       </div>
-    </section>
+    </Container>
   );
 }

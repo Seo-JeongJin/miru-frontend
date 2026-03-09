@@ -10,7 +10,7 @@ export const fetchAllInquiries = async (): Promise<Inquiry[]> => {
 // 2. 문의글 신규 등록 (POST)
 export const createInquiry = async (data: {
   title: string;
-  context: string;
+  content: string;
 }) => {
   const response = await apiClient.post('/api/inquiries', data);
   return response.data;

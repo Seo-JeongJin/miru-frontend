@@ -36,3 +36,8 @@ export function formatDate(isoString: string): string {
 export function formatDateFull(isoString: string): string {
   return dayjs(isoString).format('YYYY. MM. DD. HH:mm');
 }
+
+/** 날짜+시간 (예: 2026년 2월 15일 14:30) */
+export function formatDateTime(isoString: string): string {
+  return dayjs(isoString).format('YYYY년 M월 D일 HH:mm');
+}

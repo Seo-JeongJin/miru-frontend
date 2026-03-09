@@ -21,6 +21,6 @@ export const authApi = {
 
   
   logout: async (): Promise<void> => {
-    await apiClient.post('/logout');
+    await apiClient.post('/api/logout');
   },
 };

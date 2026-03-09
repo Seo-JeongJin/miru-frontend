@@ -2,12 +2,14 @@
 
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { deleteInquiry } from '../model/api'; // 나중에 api.ts에 추가할 함수
+import { useQueryClient } from '@tanstack/react-query';
+import { deleteInquiry } from '../model/api';
 import { useModalStore } from '@/app/store/useModalStore';
 
 export const DeleteInquiryButton = ({ id }: { id: string }) => {
   const { openModal, closeModal } = useModalStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleDelete = () => {
     openModal({
@@ -22,6 +24,7 @@ export const DeleteInquiryButton = ({ id }: { id: string }) => {
           onClick: async () => {
             try {
               await deleteInquiry(id);
+              queryClient.invalidateQueries({ queryKey: ['inquiries-all'] });
               closeModal();
               router.push('/inquiry'); // 삭제 후 목록으로 이동 [cite: 2026-02-10]
             } catch (error) {

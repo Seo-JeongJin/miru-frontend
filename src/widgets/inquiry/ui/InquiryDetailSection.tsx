@@ -2,6 +2,7 @@ import { Badge } from '@/shared/ui/badge';
 import { InquiryAdminAnswer } from './InquiryAdminAnswer';
 import { DeleteInquiryButton } from '@/features/inquiry/ui/DeleteInquiryButton';
 import { InquiryDetailItem } from '@/features/inquiry/model/types';
+import { formatDateTime } from '@/shared/lib/formatDate';
 
 export const InquiryDetailSection = ({
   data,
@@ -10,7 +11,11 @@ export const InquiryDetailSection = ({
   data: InquiryDetailItem;
   id: string;
 }) => {
-  const badgeVariant = data.status === 'WAITING' ? 'destructive' : 'default';
+  const statusConfig = {
+    WAITING: { label: '답변대기', className: 'bg-point-red text-white' },
+    COMPLETED: { label: '답변완료', className: 'bg-main text-white' },
+  };
+  const currentStatus = statusConfig[data.status];
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
@@ -20,21 +25,23 @@ export const InquiryDetailSection = ({
           {/* 삭제 버튼 피처 배치 */}
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-gray-400">{data.createdAt}</p>
+          <div className="flex items-center gap-3">
+            <p className="text-gray-400 text-sm">{formatDateTime(data.createdAt)}</p>
+            <Badge
+              className={`h-6 px-3 text-xs font-bold rounded-md border-none ${currentStatus.className}`}
+            >
+              {currentStatus.label}
+            </Badge>
+          </div>
           <DeleteInquiryButton id={id} />
         </div>
-        <Badge
-          variant={badgeVariant}
-          className="px-2 py-1 rounded-full text-sm font-medium mt-4"
-        >
-          {data.status}
-        </Badge>
       </div>
 
       {/* 본문 내용 */}
-      <div className="min-h-[300px] text-lg leading-loose mb-10">
-        {data.content}
-      </div>
+      <div
+        className="min-h-75 text-lg leading-loose mb-10 prose prose-base max-w-none"
+        dangerouslySetInnerHTML={{ __html: data.content }}
+      />
 
       {/* 운영자 답변 컴포넌트 */}
       <InquiryAdminAnswer
