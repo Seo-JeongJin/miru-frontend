@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { isAxiosError } from 'axios';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useAnalysisQuery } from '@/entities/analysis/model/useAnalysisQuery';
 import { TiptapEditor } from '@/shared/ui/tiptap-editor';
 import { Button } from '@/shared/ui/button';
@@ -14,12 +15,13 @@ import { useModalStore } from '@/app/store/useModalStore';
 import { sanitizeHtml } from '@/shared/lib/sanitize';
 import { useSubmitAnswerMutation } from '@/features/analysis-answer/model/useSubmitAnswerMutation';
 import { useDeleteAnswerMutation } from '@/features/analysis-answer/model/useDeleteAnswerMutation';
+import { AnalysisListSkeleton } from '@/entities/analysis/ui/AnalysisCardSkeleton';
 
 interface Props {
   id: number;
 }
 
-export function AnalysisDetailMain({ id }: Props) {
+function AnalysisDetailContent({ id }: Props) {
   const router = useRouter();
   const { data } = useAnalysisQuery();
   const { openModal, closeModal } = useModalStore();
@@ -200,5 +202,29 @@ export function AnalysisDetailMain({ id }: Props) {
         )}
       </div>
     </Container>
+  );
+}
+
+export function AnalysisDetailMain({ id }: Props) {
+  const { openModal, closeModal } = useModalStore();
+
+  return (
+    <ErrorBoundary
+      onError={(error) => {
+        const message = isAxiosError(error)
+          ? error.response?.data?.message
+          : undefined;
+        openModal({
+          title: '불러오기 실패',
+          description: message ?? '자기분석 정보를 불러오지 못했습니다.',
+          buttons: [{ label: '확인', onClick: closeModal }],
+        });
+      }}
+      fallback={<div />}
+    >
+      <Suspense fallback={<AnalysisListSkeleton />}>
+        <AnalysisDetailContent id={id} />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
