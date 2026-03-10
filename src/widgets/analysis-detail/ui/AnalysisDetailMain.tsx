@@ -1,0 +1,204 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { isAxiosError } from 'axios';
+import { useAnalysisQuery } from '@/entities/analysis/model/useAnalysisQuery';
+import { TiptapEditor } from '@/shared/ui/tiptap-editor';
+import { Button } from '@/shared/ui/button';
+import { Container } from '@/shared/ui/container';
+import { useLoginRequired } from '@/shared/lib/hooks/useLoginRequired';
+import { useModalStore } from '@/app/store/useModalStore';
+import { sanitizeHtml } from '@/shared/lib/sanitize';
+import { useSubmitAnswerMutation } from '@/features/analysis-answer/model/useSubmitAnswerMutation';
+import { useDeleteAnswerMutation } from '@/features/analysis-answer/model/useDeleteAnswerMutation';
+
+interface Props {
+  id: number;
+}
+
+export function AnalysisDetailMain({ id }: Props) {
+  const router = useRouter();
+  const { data } = useAnalysisQuery();
+  const { openModal, closeModal } = useModalStore();
+  const { checkAuth, user } = useLoginRequired();
+
+  const item = data.items.find((i) => i.id === id);
+
+  const [mode, setMode] = useState<'view' | 'edit'>(
+    item?.answerContext ? 'view' : 'edit',
+  );
+  const [editorContent, setEditorContent] = useState(item?.answerContext ?? '');
+  const [viewContent, setViewContent] = useState(item?.answerContext ?? '');
+
+  const { mutate: submitAnswer, isPending: isSubmitting } =
+    useSubmitAnswerMutation(id);
+  const { mutate: deleteAnswer, isPending: isDeleting } =
+    useDeleteAnswerMutation(id);
+
+  if (!item) {
+    router.replace('/analysis');
+    return null;
+  }
+
+  const handleReset = () => {
+    checkAuth(() => {
+      openModal({
+        title: '초기화',
+        description: '정말로 초기화 하시겠습니까?',
+        buttons: [
+          {
+            label: '네',
+            onClick: () => {
+              closeModal();
+              deleteAnswer(undefined, {
+                onSuccess: () => {
+                  router.push('/analysis');
+                },
+                onError: (error) => {
+                  const message = isAxiosError(error)
+                    ? error.response?.data?.message
+                    : undefined;
+                  openModal({
+                    title: '초기화 실패',
+                    description: message ?? '오류가 발생했습니다.',
+                    buttons: [{ label: '확인', onClick: closeModal }],
+                  });
+                },
+              });
+            },
+          },
+          {
+            label: '아니오',
+            onClick: closeModal,
+          },
+        ],
+      });
+    });
+  };
+
+  const handleSave = (status: 'IN_PROGRESS' | 'COMPLETED') => {
+    checkAuth(() => {
+      submitAnswer(
+        { answerContext: editorContent, status },
+        {
+          onSuccess: () => {
+            setViewContent(editorContent);
+            setMode('view');
+          },
+          onError: (error) => {
+            const message = isAxiosError(error)
+              ? error.response?.data?.message
+              : undefined;
+            openModal({
+              title: status === 'IN_PROGRESS' ? '임시저장 실패' : '저장 실패',
+              description: message ?? '오류가 발생했습니다.',
+              buttons: [{ label: '확인', onClick: closeModal }],
+            });
+          },
+        },
+      );
+    });
+  };
+
+  return (
+    <Container>
+      <div className="py-10 pb-20">
+        {/* 질문 + 우측 섹션 */}
+        <div className="flex items-start justify-between mb-8 gap-8">
+          <h1 className="text-3xl font-bold text-foreground">{item.content}</h1>
+
+          {mode === 'edit' ? (
+            <div className="flex items-start gap-3 shrink-0">
+              <div className="flex flex-col gap-1">
+                <Link
+                  href="/tips"
+                  className="text-[var(--color-main)] font-bold text-sm hover:underline"
+                >
+                  필독
+                </Link>
+                <span className="text-sm font-medium text-gray-600">
+                  자기분석 팁 바로 읽기!
+                </span>
+              </div>
+              <Image
+                src="/assets/images/tip-character.png"
+                alt="팁 캐릭터"
+                width={187}
+                height={111}
+                className="object-contain"
+              />
+            </div>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setEditorContent(viewContent);
+                setMode('edit');
+              }}
+              className="shrink-0"
+            >
+              수정
+            </Button>
+          )}
+        </div>
+
+        {mode === 'edit' ? (
+          <>
+            <div
+              onFocusCapture={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  checkAuth();
+                }
+              }}
+            >
+              <TiptapEditor
+                content={editorContent}
+                onChange={setEditorContent}
+                placeholder="답변을 입력해주세요"
+              />
+            </div>
+
+            <div className="mt-6 flex justify-center gap-4">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleReset}
+                disabled={isDeleting || isSubmitting}
+                className="rounded-2xl px-10"
+              >
+                초기화
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => handleSave('IN_PROGRESS')}
+                disabled={isSubmitting || isDeleting}
+                className="rounded-2xl px-10"
+              >
+                임시저장
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => handleSave('COMPLETED')}
+                disabled={isSubmitting || isDeleting}
+                className="rounded-2xl px-10"
+              >
+                작성 완료
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div
+            className="prose prose-base max-w-none text-foreground"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(viewContent) }}
+          />
+        )}
+      </div>
+    </Container>
+  );
+}
