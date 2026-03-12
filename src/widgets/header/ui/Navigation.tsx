@@ -21,7 +21,6 @@ export const Navigation = () => {
       >
         1:1 문의
       </button>
-      <NavLink href="/inquiry">1:1 문의</NavLink>
       <AdminNavLink />
     </nav>
   );
