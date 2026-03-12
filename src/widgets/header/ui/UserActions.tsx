@@ -6,11 +6,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/entities/auth/useAuth';
 import { authApi } from '@/shared/api/auth';
+import { useLoginRequired } from '@/shared/lib/hooks/useLoginRequired';
 
 export const UserActions = () => {
   const { data: user } = useAuth();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { checkAuth } = useLoginRequired();
 
   const handleLogout = async () => {
     try {
@@ -40,7 +42,11 @@ export const UserActions = () => {
         <Bell size={24} strokeWidth={2} />
       </button>
 
-      <button className="hidden md:flex items-center justify-center p-1 cursor-pointer">
+      <button
+        className="hidden md:flex items-center justify-center p-1 cursor-pointer"
+        onClick={() => checkAuth(() => router.push('/mypage'))}
+        aria-label="마이페이지"
+      >
         <User size={24} strokeWidth={2} />
       </button>
     </div>
