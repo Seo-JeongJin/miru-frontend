@@ -11,8 +11,8 @@ export const FooterNav = () => {
   return (
     <nav className="flex items-center gap-8">
       {isMyPage && <WithdrawButton />}
-      <FooterLink href="/terms">이용약관</FooterLink>
-      <FooterLink href="/privacy">개인정보동의</FooterLink>
+      <FooterLink href="/terms/service">이용약관</FooterLink>
+      <FooterLink href="/terms/privacy">개인정보동의</FooterLink>
       <FooterLink href="/contact">고객문의</FooterLink>
     </nav>
   );
