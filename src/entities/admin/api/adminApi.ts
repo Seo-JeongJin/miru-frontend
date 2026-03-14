@@ -17,7 +17,7 @@ export const adminApi = {
   },
 
   deleteAnswer: async (id: number): Promise<void> => {
-    await apiClient.delete(`/api/admin/inquiries/${id}`);
+    await apiClient.delete(`/api/admin/inquiries/${id}/answer`);
   },
 
   getUsers: async (page: number, name?: string): Promise<AdminUsersResponse> => {
