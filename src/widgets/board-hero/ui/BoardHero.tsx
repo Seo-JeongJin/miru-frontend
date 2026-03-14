@@ -6,7 +6,7 @@ export function BoardHero() {
       title="커뮤니티"
       description={
         <>
-          근본 있는 <strong>취준생</strong> 들의아지트
+          자기분석을 나누는 <strong>취준생 </strong> 커뮤니티
         </>
       }
       imageSrc="/assets/images/board-hero.png"
