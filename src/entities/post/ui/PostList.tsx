@@ -14,7 +14,7 @@ export function PostList({ posts }: PostListProps) {
   return (
     <div className="flex flex-col gap-3">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} onClick={() => router.push(`/board/${post.id}`)} />
+        <PostCard key={post.id} post={post} onClick={() => router.push(`/boards/${post.id}`)} />
       ))}
     </div>
   );

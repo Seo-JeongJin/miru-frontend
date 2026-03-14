@@ -51,7 +51,7 @@ export function AdminUserBoardsContent({ userId }: Props) {
               <MyPostCard
                 key={post.id}
                 post={post}
-                onClick={() => router.push(`/board/${post.id}`)}
+                onClick={() => router.push(`/boards/${post.id}`)}
               />
             ))}
           </div>

@@ -65,9 +65,9 @@ export function BoardMain() {
     setPage(1);
     // URL 업데이트
     if (keyword.trim()) {
-      router.push(`/board?keyword=${encodeURIComponent(keyword)}&page=1`);
+      router.push(`/boards?keyword=${encodeURIComponent(keyword)}&page=1`);
     } else {
-      router.push('/board');
+      router.push('/boards');
     }
   };
 
@@ -75,9 +75,9 @@ export function BoardMain() {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     if (searchKeyword.trim()) {
-      router.push(`/board?keyword=${encodeURIComponent(searchKeyword)}&page=${newPage}`);
+      router.push(`/boards?keyword=${encodeURIComponent(searchKeyword)}&page=${newPage}`);
     } else {
-      router.push(`/board?page=${newPage}`);
+      router.push(`/boards?page=${newPage}`);
     }
   };
 

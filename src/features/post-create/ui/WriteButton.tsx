@@ -13,7 +13,7 @@ export function WriteButton() {
       variant="default"
       size="default"
       className="cursor-pointer rounded-2xl px-6"
-      onClick={() => checkAuth(() => router.push('/board/write'))}
+      onClick={() => checkAuth(() => router.push('/boards/write'))}
     >
       글 쓰기
     </Button>

@@ -9,13 +9,15 @@ interface AlarmItemProps {
 }
 
 export const AlarmItem = ({ item, onDelete }: AlarmItemProps) => {
+  const urlWithAlarmId = `${item.targetUrl}${item.targetUrl.includes('?') ? '&' : '?'}alarmId=${item.id}`;
+
   return (
     <div
       className={`border-b border-gray-200 p-4 hover:bg-gray-50 transition ${
         !item.isRead ? 'bg-blue-50' : ''
       } flex gap-3 items-start group`}
     >
-      <Link href={item.targetUrl} className="flex-1 cursor-pointer">
+      <Link href={urlWithAlarmId} className="flex-1 cursor-pointer">
         <div className="flex gap-3">
           <div className="flex-1">
             <div className="flex items-baseline gap-2">

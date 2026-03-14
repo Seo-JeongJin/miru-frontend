@@ -42,7 +42,7 @@ export const MobileMenu = ({ onClose }: MobileMenuProps) => {
         <MobileMenuItem href="/analysis" label="자기분석" onClose={onClose} />
         <MobileMenuItem href="/about" label="자기분석이란?" onClose={onClose} />
         <MobileMenuItem href="/contact" label="자기분석 팁" onClose={onClose} />
-        <MobileMenuItem href="/board" label="커뮤니티" onClose={onClose} />
+        <MobileMenuItem href="/boards" label="커뮤니티" onClose={onClose} />
         <MobileMenuItem href="/mypage" label="마이페이지" onClose={onClose} />
 
         {/* 로그인/로그아웃 */}

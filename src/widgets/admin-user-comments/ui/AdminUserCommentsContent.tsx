@@ -51,7 +51,7 @@ export function AdminUserCommentsContent({ userId }: Props) {
               <MyCommentCard
                 key={comment.id}
                 comment={comment}
-                onClick={() => router.push(`/board/${comment.boardId}`)}
+                onClick={() => router.push(`/boards/${comment.boardId}`)}
               />
             ))}
           </div>

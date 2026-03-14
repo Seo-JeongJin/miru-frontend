@@ -19,7 +19,7 @@ export function DeletePostButton({ postId }: DeletePostButtonProps) {
     mutationFn: () => apiClient.delete(`/api/boards/${postId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      router.push('/board');
+      router.push('/boards');
     },
   });
 

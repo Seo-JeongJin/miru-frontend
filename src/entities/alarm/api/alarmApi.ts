@@ -11,4 +11,8 @@ export const alarmApi = {
     const { data } = await apiClient.get('/api/alarms', { params: { page } });
     return data.data;
   },
+
+  readAlarm: async (id: number): Promise<void> => {
+    await apiClient.patch(`/api/alarms/${id}/read`);
+  },
 };

@@ -36,7 +36,7 @@ export function PostDetailSection({ post, postId }: PostDetailSectionProps) {
                 variant="ghost"
                 size="sm"
                 className="cursor-pointer hover:bg-primary/10 hover:text-primary"
-                onClick={() => router.push(`/board/${postId}/edit`)}
+                onClick={() => router.push(`/boards/${postId}/edit`)}
               >
                 수정
               </Button>

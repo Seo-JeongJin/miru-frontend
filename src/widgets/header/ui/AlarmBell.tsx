@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { Bell } from 'lucide-react';
 import { useAuth } from '@/entities/auth/useAuth';
 import { useHasUnreadQuery } from '@/entities/alarm/model/useHasUnreadQuery';
-import { useReadAllAlarmsMutation } from '@/features/alarm-read-all/model/useReadAllAlarmsMutation';
 import { useAlarmStore } from '@/app/store/useAlarmStore';
 import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
 import { useLoginRequired } from '@/shared/lib/hooks/useLoginRequired';
@@ -19,7 +18,6 @@ export const AlarmBell = () => {
   const router = useRouter();
   const { data: user } = useAuth();
   const { data: unreadData } = useHasUnreadQuery();
-  const { mutate: readAll } = useReadAllAlarmsMutation();
   const { isOpen, togglePanel, closePanel } = useAlarmStore();
   const isMobile = useIsMobile();
   const { checkAuth } = useLoginRequired();
@@ -36,9 +34,6 @@ export const AlarmBell = () => {
     }
 
     // PC: just toggle panel (show login message if not logged in)
-    if (!isOpen && hasUnread && user) {
-      readAll();
-    }
     togglePanel();
   };
 

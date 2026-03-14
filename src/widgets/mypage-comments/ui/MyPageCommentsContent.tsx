@@ -34,7 +34,7 @@ export function MyPageCommentsContent({ page, setPage, nickname }: Props) {
               <MyCommentCard
                 key={`${comment.boardId}-${i}`}
                 comment={comment}
-                onClick={() => router.push(`/board/${comment.boardId}`)}
+                onClick={() => router.push(`/boards/${comment.boardId}`)}
               />
             ))}
           </div>

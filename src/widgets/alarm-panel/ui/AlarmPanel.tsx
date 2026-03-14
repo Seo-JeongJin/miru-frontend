@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useAlarmsQuery } from '@/entities/alarm/model/useAlarmsQuery';
 import { useReadAllAlarmsMutation } from '@/features/alarm-read-all/model/useReadAllAlarmsMutation';
+import { alarmApi } from '@/entities/alarm/api/alarmApi';
 import { alarmQueryKeys } from '@/entities/alarm/model/alarmQueryKeys';
 import { AlarmList } from './AlarmList';
 
@@ -17,14 +18,19 @@ export const AlarmPanel = () => {
   const hasItems = items.length > 0;
 
   const handleDelete = useCallback(
-    (itemId: number) => {
-      queryClient.setQueryData(alarmQueryKeys.list(0), (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          items: oldData.items.filter((item: any) => item.id !== itemId),
-        };
-      });
+    async (itemId: number) => {
+      try {
+        await alarmApi.readAlarm(itemId);
+        queryClient.setQueryData(alarmQueryKeys.list(0), (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            items: oldData.items.filter((item: any) => item.id !== itemId),
+          };
+        });
+      } catch (error) {
+        console.error('Failed to read alarm:', error);
+      }
     },
     [queryClient]
   );

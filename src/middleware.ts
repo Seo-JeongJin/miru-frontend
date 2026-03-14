@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 const protectedRoutes = [
   '/mypage',
   '/write',
-  '/board/:id/edit',
+  '/boards/:id/edit',
   '/inquiry/write',
   '/about-analysis',
   '/admin',
@@ -18,8 +18,8 @@ export function middleware(req: NextRequest) {
 
   const isProtected = protectedRoutes.some((p) => {
     if (p.includes(':id')) {
-      // Match pattern like /board/123/edit
-      return pathname.match(/^\/board\/\d+\/edit(\/|$)/);
+      // Match pattern like /boards/123/edit
+      return pathname.match(/^\/boards\/\d+\/edit(\/|$)/);
     }
     return pathname.startsWith(p);
   });
@@ -41,7 +41,7 @@ export const config = {
   matcher: [
     '/mypage/:path*',
     '/write/:path*',
-    '/board/:id/edit',
+    '/boards/:id/edit',
     '/inquiry/:path*',
     '/about-analysis/:path*',
     '/admin/:path*',
