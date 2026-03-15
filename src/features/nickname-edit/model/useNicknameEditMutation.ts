@@ -6,12 +6,8 @@ export const useNicknameEditMutation = () => {
 
   return useMutation({
     mutationFn: (nickname: string) => mypageApi.updateNickname(nickname),
-    onSuccess: (newNickname) => {
-      queryClient.setQueryData(
-        ['auth', 'me'],
-        (old: { nickname: string } | null | undefined) =>
-          old ? { ...old, nickname: newNickname } : old,
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
       queryClient.invalidateQueries({ queryKey: ['mypage'] });
     },
   });
