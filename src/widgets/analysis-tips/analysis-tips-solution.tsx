@@ -1,6 +1,7 @@
 import { Badge } from '@/shared/ui/badge';
 import { Container } from '@/shared/ui/container';
 import { Card } from '@/shared/ui/card';
+import { QuestionBox } from './question-box';
 
 export function AnalysisTipsSolution() {
   const solutions = [
@@ -45,6 +46,10 @@ export function AnalysisTipsSolution() {
                 ‘그 선택의 기준은 무엇이었나요?’를
                 <br /> 세 번 이상 파고들어야 진짜 당신의 모습이 나옵니다.
               </p>
+            </div>
+            {/* Team Problem Question */}
+            <div className="mt-2 pt-2  border-gray-200">
+              <QuestionBox question="팀 프로젝트에서 문제가 생겼을 때 어떻게 해결했나요?" />
             </div>
           </div>
 

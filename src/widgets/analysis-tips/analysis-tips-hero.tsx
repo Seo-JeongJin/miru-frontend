@@ -9,7 +9,7 @@ export function AnalysisTipsHero() {
           {/* Badge */}
           <div className="inline-block rounded-full bg-white/10 px-4 py-2">
             <span className="text-base font-semibold text-white">
-              miru - 일본취업자기분석 가이드
+              Miru - 일본취업자기분석 가이드
             </span>
           </div>
 
@@ -27,7 +27,7 @@ export function AnalysisTipsHero() {
               공통적으로 들었던 말이 있습니다. 많은 지원자가 자기분석을
               ‘끝냈다’고 생각하지만, 실제 면접에서는 그 깊이가 드러납니다.
               겉핥기식으로 정리된 답변만으로는 일본 기업이 보고 싶은 사람다움과
-              사고의 깊이를 충분히 전달하기 어렵습니다
+              사고의 깊이를 충분히 전달하기 어렵습니다.
             </p>
           </div>
         </div>
