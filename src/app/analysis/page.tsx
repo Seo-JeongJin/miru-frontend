@@ -28,7 +28,7 @@ export default function AnalysisPage() {
     <>
       <PageHero
         title="자기분석"
-        description="너의 근본 부터 탈탈 털어줄게"
+        description="일본 취업의 시작, 꼭 필요한 자기분석 질문"
         imageSrc="/assets/images/analysis-hero.png"
         imageAlt="자기분석 히어로 이미지"
         imageContainerClassName="relative size-52 shrink-0"
