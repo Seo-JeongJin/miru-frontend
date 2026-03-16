@@ -28,6 +28,10 @@ export const AlarmPanel = () => {
             items: oldData.items.filter((item: any) => item.id !== itemId),
           };
         });
+        // 헤더의 빨간 점도 업데이트
+        const updatedData = queryClient.getQueryData(alarmQueryKeys.list(0)) as any;
+        const hasUnread = updatedData?.items?.some((item: any) => !item.isRead) ?? false;
+        queryClient.setQueryData(alarmQueryKeys.hasUnread(), { hasUnread });
       } catch (error) {
         console.error('Failed to read alarm:', error);
       }

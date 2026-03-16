@@ -5,14 +5,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAlarmsInfiniteQuery } from '@/entities/alarm/model/useAlarmsInfiniteQuery';
 import { useHasUnreadQuery } from '@/entities/alarm/model/useHasUnreadQuery';
 import { useReadAllAlarmsMutation } from '@/features/alarm-read-all/model/useReadAllAlarmsMutation';
+import { alarmApi } from '@/entities/alarm/api/alarmApi';
 import { alarmQueryKeys } from '@/entities/alarm/model/alarmQueryKeys';
 import { AlarmList } from './AlarmList';
 
+
 export const AlarmsPageClient = () => {
   const queryClient = useQueryClient();
-  const { data: unreadData } = useHasUnreadQuery();
   const { data, isLoading, hasNextPage, fetchNextPage } = useAlarmsInfiniteQuery();
-  const { mutate: readAll, isPending } = useReadAllAlarmsMutation();
 
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -35,20 +35,28 @@ export const AlarmsPageClient = () => {
   }, [hasNextPage, fetchNextPage]);
 
   const items = data?.pages.flatMap((p) => p.items) ?? [];
-  const hasItems = items.length > 0;
 
   const handleDelete = useCallback(
-    (itemId: number) => {
-      queryClient.setQueryData(alarmQueryKeys.infinite(), (oldData: any) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page: any) => ({
-            ...page,
-            items: page.items.filter((item: any) => item.id !== itemId),
-          })),
-        };
-      });
+    async (itemId: number) => {
+      try {
+        await alarmApi.readAlarm(itemId);
+        queryClient.setQueryData(alarmQueryKeys.infinite(), (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              items: page.items.filter((item: any) => item.id !== itemId),
+            })),
+          };
+        });
+        // 헤더의 빨간 점도 업데이트 (읽지 않은 알람이 남아있으면 true, 없으면 false)
+        const remainingAlarms = queryClient.getQueryData(alarmQueryKeys.infinite()) as any;
+        const hasUnread = remainingAlarms?.pages?.some((p: any) => p.items.some((item: any) => !item.isRead)) ?? false;
+        queryClient.setQueryData(alarmQueryKeys.hasUnread(), { hasUnread });
+      } catch (error) {
+        console.error('Failed to read alarm:', error);
+      }
     },
     [queryClient]
   );
