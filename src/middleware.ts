@@ -12,8 +12,6 @@ const protectedRoutes = [
 ];
 
 export function middleware(req: NextRequest) {
-  if (process.env.NODE_ENV === 'development') return NextResponse.next();
-
   const pathname = req.nextUrl.pathname;
 
   const isProtected = protectedRoutes.some((p) => {
