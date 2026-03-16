@@ -20,11 +20,12 @@ export function AnalysisTipsCta() {
     {
       title:
         '그 경험을 통해 얻은 나만의 가치관 이나 깨달음이 한문장으로 정리되었나요?',
-      description: '기업 리서치 없이는 불가능합니다.',
+      description: '겪은 일보다, 그 경험을 어떻게 해석했는지가 더 중요합니다.',
     },
     {
       title: '면접관이 "이 사람과 함께 일하고 싶다"고 느끼게 할 수 있을까?',
-      description: '결국 사람 대 사람의 신뢰가 결정합니다.',
+      description:
+        '면접은 능력을 보여주는 자리이면서, 함께 일할 사람을 만나는 자리이기도 합니다.',
     },
   ];
 
@@ -64,7 +65,10 @@ export function AnalysisTipsCta() {
               {/* CTA Button */}
               <div className="flex justify-center pt-4">
                 <Link href="/analysis">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 cursor-pointer">
+                  <Button
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 cursor-pointer"
+                  >
                     자기분석 하러가기
                   </Button>
                 </Link>

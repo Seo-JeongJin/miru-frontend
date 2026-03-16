@@ -25,7 +25,7 @@ export function AnalysisTipsExample() {
   };
 
   const failData: TipData = {
-    badgeLabel: '탈락하는 분석',
+    badgeLabel: '아쉬운 분석',
     pointContent: [
       { text: '학생회 임원으로서 축제를 ', highlight: false },
       { text: '성공적으로', highlight: true },
@@ -43,7 +43,7 @@ export function AnalysisTipsExample() {
   };
 
   const passData: TipData = {
-    badgeLabel: '합격하는 분석',
+    badgeLabel: '좋은 분석',
     pointContent: [
       { text: '"작년 축제 당시, 예산 대비 ', highlight: false },
       { text: '30% 감소', highlight: true },
