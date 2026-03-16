@@ -16,13 +16,6 @@ export const AlarmsPageClient = () => {
 
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // Call read-all once when page has unread alarms
-  useEffect(() => {
-    if (unreadData?.hasUnread) {
-      readAll();
-    }
-  }, [unreadData?.hasUnread, readAll]);
-
   // Infinite scroll with IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
