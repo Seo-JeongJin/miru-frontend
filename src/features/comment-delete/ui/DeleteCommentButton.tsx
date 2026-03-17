@@ -1,6 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postQueryKeys } from '@/entities/post/model/usePostsQuery';
 import { Button } from '@/shared/ui/button';
 import { deleteComment } from '@/features/comment-create/model/api';
 import { PostDetail } from '@/entities/post/model/types';
@@ -12,13 +13,14 @@ interface DeleteCommentButtonProps {
 
 export function DeleteCommentButton({ commentId, postId }: DeleteCommentButtonProps) {
   const queryClient = useQueryClient();
+  const detailKey = postQueryKeys.detail(parseInt(postId));
 
   const { mutate } = useMutation({
     mutationFn: () => deleteComment(commentId),
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['post', postId] });
-      const prev = queryClient.getQueryData<PostDetail>(['post', postId]);
-      queryClient.setQueryData<PostDetail>(['post', postId], (old) => {
+      await queryClient.cancelQueries({ queryKey: detailKey });
+      const prev = queryClient.getQueryData<PostDetail>(detailKey);
+      queryClient.setQueryData<PostDetail>(detailKey, (old) => {
         if (!old) return old;
         const isTopLevel = old.comments.some((c) => c.id === commentId);
         return {
@@ -35,10 +37,10 @@ export function DeleteCommentButton({ commentId, postId }: DeleteCommentButtonPr
       return { prev };
     },
     onError: (_, __, ctx) => {
-      queryClient.setQueryData(['post', postId], ctx?.prev);
+      queryClient.setQueryData(detailKey, ctx?.prev);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      queryClient.invalidateQueries({ queryKey: detailKey });
     },
   });
 

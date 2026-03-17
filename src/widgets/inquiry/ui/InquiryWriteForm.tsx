@@ -3,8 +3,7 @@
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import { createInquiry } from '@/features/inquiry/model/api';
+import { useCreateInquiryMutation } from '@/features/inquiry/model/useCreateInquiryMutation';
 import { Button } from '@/shared/ui/button';
 import { TitleInput } from '@/shared/ui/title-input';
 import { TiptapEditor } from '@/shared/ui/tiptap-editor';
@@ -15,12 +14,14 @@ export function InquiryWriteForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   // 1. 모달 제어 함수 가져오기
   const { openModal, closeModal } = useModalStore();
 
-  const handleSubmit = async () => {
+  // 2. mutation 훅 사용
+  const { mutate: createInquiryMutation, isPending } = useCreateInquiryMutation();
+
+  const handleSubmit = () => {
     if (!title || !content) {
       openModal({
         title: '입력 확인',
@@ -30,20 +31,24 @@ export function InquiryWriteForm() {
       return;
     }
 
-    try {
-      await createInquiry({ title, content });
-      queryClient.invalidateQueries({ queryKey: ['inquiries-all'] });
-      router.push('/inquiries');
-    } catch (error) {
-      const message = isAxiosError(error)
-        ? error.response?.data?.message
-        : undefined;
-      openModal({
-        title: '등록 실패',
-        description: message ?? '등록에 실패했습니다.',
-        buttons: [{ label: '확인', onClick: closeModal }],
-      });
-    }
+    createInquiryMutation(
+      { title, content },
+      {
+        onSuccess: () => {
+          router.push('/inquiries');
+        },
+        onError: (error) => {
+          const message = isAxiosError(error)
+            ? error.response?.data?.message
+            : undefined;
+          openModal({
+            title: '등록 실패',
+            description: message ?? '등록에 실패했습니다.',
+            buttons: [{ label: '확인', onClick: closeModal }],
+          });
+        },
+      }
+    );
   };
   return (
     <Container>
@@ -60,8 +65,12 @@ export function InquiryWriteForm() {
           onChange={setContent}
         />
         <div className="mt-4 flex justify-end">
-          <Button className="cursor-pointer px-8 py-2" onClick={handleSubmit}>
-            올리기
+          <Button
+            className="cursor-pointer px-8 py-2"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
+            {isPending ? '등록 중...' : '올리기'}
           </Button>
         </div>
       </div>
