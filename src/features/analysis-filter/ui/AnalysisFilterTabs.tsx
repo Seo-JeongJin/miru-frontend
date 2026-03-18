@@ -31,7 +31,7 @@ export function AnalysisFilterTabs({ activeTab, counts, onTabChange }: Props) {
       <h2 className="mb-4 text-center text-lg font-semibold">
         질문 리스트 현황
       </h2>
-      <div className="mx-auto flex w-full max-w-lg gap-2">
+      <div className="mx-auto flex w-full max-w-lg gap-2 px-4 md:px-0">
         {tabs.map(({ key, label, countKey }) => {
           const isActive = activeTab === key;
           return (

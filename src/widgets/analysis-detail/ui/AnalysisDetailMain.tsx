@@ -115,8 +115,8 @@ function AnalysisDetailContent({ id }: Props) {
     <Container>
       <div className="py-10 pb-20">
         {/* 질문 + 우측 섹션 */}
-        <div className="flex items-start justify-between mb-8 gap-8">
-          <h1 className="text-3xl font-bold text-foreground">{item.content}</h1>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-8 gap-4 sm:gap-8">
+          <h1 className="text-xl sm:text-3xl font-bold text-foreground">{item.content}</h1>
 
           {mode === 'edit' ? (
             <div className="flex items-start gap-3 shrink-0">
@@ -168,13 +168,13 @@ function AnalysisDetailContent({ id }: Props) {
               />
             </div>
 
-            <div className="mt-6 flex justify-center gap-4">
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button
-                variant="outline"
+                variant="destructive"
                 size="lg"
                 onClick={handleReset}
                 disabled={isDeleting || isSubmitting}
-                className="rounded-2xl px-10"
+                className="rounded-2xl px-6 sm:px-10"
               >
                 초기화
               </Button>
@@ -183,7 +183,7 @@ function AnalysisDetailContent({ id }: Props) {
                 size="lg"
                 onClick={() => handleSave('IN_PROGRESS')}
                 disabled={isSubmitting || isDeleting}
-                className="rounded-2xl px-10"
+                className="rounded-2xl px-6 sm:px-10"
               >
                 임시저장
               </Button>
@@ -191,7 +191,7 @@ function AnalysisDetailContent({ id }: Props) {
                 size="lg"
                 onClick={() => handleSave('COMPLETED')}
                 disabled={isSubmitting || isDeleting}
-                className="rounded-2xl px-10"
+                className="rounded-2xl px-6 sm:px-10"
               >
                 작성 완료
               </Button>
