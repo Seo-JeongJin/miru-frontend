@@ -22,7 +22,7 @@ export const InquiryList = () => {
   const currentViewData = allInquiries.slice(offset, offset + 10);
 
   return (
-    <section className="flex flex-col items-center w-full max-w-[800px] mx-auto pb-20">
+    <section className="flex flex-col items-center w-full max-w-[800px] mx-auto pb-20 px-4 md:px-0">
       <h2 className="sr-only">문의 게시글 목록</h2>
 
       {totalCount > 0 ? (

@@ -7,6 +7,7 @@ export const InquiryHero = () => {
       description="혹시 도움이 필요하신가요?"
       imageSrc="/assets/images/inquiry-hero.png"
       imageAlt="Inquiry Hero Character"
+      imageClassName="object-contain"
     />
   );
 };
