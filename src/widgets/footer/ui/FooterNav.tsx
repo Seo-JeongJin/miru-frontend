@@ -9,7 +9,7 @@ export const FooterNav = () => {
   const isMyPage = pathname?.startsWith('/mypage');
 
   return (
-    <nav className="flex items-center gap-8">
+    <nav className="flex items-center gap-8 max-[340px]:gap-3">
       {isMyPage && <WithdrawButton />}
       <FooterLink href="/terms/service">이용약관</FooterLink>
       <FooterLink href="/terms/privacy">개인정보동의</FooterLink>
@@ -27,7 +27,7 @@ const FooterLink = ({
 }) => (
   <Link
     href={href}
-    className="text-sm font-medium text-secondary-foreground hover:text-primary transition-colors"
+    className="text-sm font-medium text-secondary-foreground hover:text-primary transition-colors max-[340px]:text-xs"
   >
     {/* text-sm: --font-size-sm (14px) 적용 */}
     {/* text-secondary-foreground: 설정하신 중간 회색 적용 */}

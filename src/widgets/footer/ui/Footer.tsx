@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex flex-col items-center justify-center gap-6">
           <FooterNav />
-          <p className="text-xs font-bold text-gray-400">
+          <p className="text-xs font-bold text-gray-400 max-[340px]:text-[10px]">
             © 2026 miru. All rights reserved
           </p>
         </div>
