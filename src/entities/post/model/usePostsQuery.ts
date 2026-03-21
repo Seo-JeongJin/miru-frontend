@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { postApi } from '@/entities/post/api/postApi';
 
@@ -7,17 +7,6 @@ export const postQueryKeys = {
   lists: ['posts', 'list'] as const,
   list: (page: number) => ['posts', 'list', page] as const,
   detail: (postId: number) => ['posts', 'detail', postId] as const,
-};
-
-export const usePostsQuery = (page: number) => {
-  return useQuery({
-    queryKey: postQueryKeys.list(page),
-    queryFn: () => postApi.getPosts(page),
-    placeholderData: (prev) => prev,
-    staleTime: 0,
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
-  });
 };
 
 export const useSuspensePostsQuery = (page: number) => {

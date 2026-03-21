@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { toggleLike } from '../model/api';
@@ -21,14 +21,10 @@ export function LikeButton({ postId, likeCount: initialLikeCount, isLiked: initi
   const { checkAuth } = useLoginRequired();
   const detailKey = postQueryKeys.detail(parseInt(postId));
 
-  // 캐시 변화를 구독해서, 캐시가 업데이트되면 즉시 리렌더링
-  const post = useSyncExternalStore(
-    (listener) => queryClient.getQueryCache().subscribe(listener),
-    () => queryClient.getQueryData<PostDetail>(detailKey) || { isLiked: initialIsLiked, likeCount: initialLikeCount }
-  );
-
-  const isLiked = post?.isLiked ?? initialIsLiked;
-  const likeCount = post?.likeCount ?? initialLikeCount;
+  const [likeState, setLikeState] = useState({
+    isLiked: initialIsLiked,
+    likeCount: initialLikeCount,
+  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => toggleLike(postId),
@@ -36,36 +32,36 @@ export function LikeButton({ postId, likeCount: initialLikeCount, isLiked: initi
       await queryClient.cancelQueries({ queryKey: detailKey });
       const previous = queryClient.getQueryData<PostDetail>(detailKey);
 
+      const newIsLiked = !likeState.isLiked;
+      const newLikeCount = newIsLiked ? likeState.likeCount + 1 : likeState.likeCount - 1;
+
+      setLikeState({ isLiked: newIsLiked, likeCount: newLikeCount });
+
       queryClient.setQueryData<PostDetail>(detailKey, (old) => {
         if (!old) return old;
         return {
           ...old,
-          isLiked: !old.isLiked,
-          likeCount: old.isLiked ? old.likeCount - 1 : old.likeCount + 1,
+          isLiked: newIsLiked,
+          likeCount: newLikeCount,
         };
       });
 
       return { previous };
     },
     onSuccess: (data) => {
-      queryClient.setQueryData<PostDetail>(detailKey, (old) => {
-        if (!old) return data;
-
-        // undefined 값을 제외하고 merge (서버가 반환하지 않은 필드는 기존값 유지)
-        const cleanData = Object.fromEntries(
-          Object.entries(data || {}).filter(([, value]) => value !== undefined)
-        );
-
-        return { ...old, ...cleanData };
-      });
+      setLikeState({ isLiked: data.isLiked, likeCount: data.likeCount });
+      queryClient.setQueryData<PostDetail>(detailKey, (old) => ({
+        ...old,
+        ...data,
+      }));
     },
     onSettled: () => {
-      // 백그라운드에서 서버 상태 재조회로 isLiked 최종 확정 (active 쿼리도 refetch)
       queryClient.invalidateQueries({ queryKey: detailKey });
       queryClient.invalidateQueries({ queryKey: postQueryKeys.lists });
     },
     onError: (_err, _vars, context) => {
       if (context?.previous) {
+        setLikeState({ isLiked: context.previous.isLiked, likeCount: context.previous.likeCount });
         queryClient.setQueryData(detailKey, context.previous);
       }
     },
@@ -76,10 +72,10 @@ export function LikeButton({ postId, likeCount: initialLikeCount, isLiked: initi
       variant="outline"
       size="sm"
       onClick={() => !isPending && checkAuth(() => mutate())}
-      className={cn('cursor-pointer', isLiked && 'text-red-500 border-red-300')}
+      className={cn('cursor-pointer', likeState.isLiked && 'text-red-500 border-red-300')}
     >
-      <Heart className={cn('size-4', isLiked && 'fill-red-500')} />
-      {likeCount}
+      <Heart className={cn('size-4', likeState.isLiked && 'fill-red-500')} />
+      {likeState.likeCount}
     </Button>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { alarmReadAllApi } from '../api/alarmReadAllApi';
+import { apiClient } from '@/shared/api/apiClient';
 import { alarmQueryKeys } from '@/entities/alarm/model/alarmQueryKeys';
 import { HasUnreadResponse } from '@/entities/alarm/model/types';
 
@@ -9,7 +9,9 @@ export function useReadAllAlarmsMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: alarmReadAllApi.readAll,
+    mutationFn: async () => {
+      await apiClient.patch('/api/alarms/read-all');
+    },
     onSuccess: () => {
       // 1. Immediately set hasUnread to false (separate branch, not affected by list invalidation)
       queryClient.setQueryData<HasUnreadResponse>(
