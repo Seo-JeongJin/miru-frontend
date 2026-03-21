@@ -1,15 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Suspense, useCallback } from 'react';
+import { Suspense } from 'react';
 import { isAxiosError } from 'axios';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useQueryClient } from '@tanstack/react-query';
 import { useAlarmsQuery } from '@/entities/alarm/model/useAlarmsQuery';
 import { useReadAllAlarmsMutation } from '@/features/alarm-read-all/model/useReadAllAlarmsMutation';
-import { alarmApi } from '@/entities/alarm/api/alarmApi';
-import { alarmQueryKeys } from '@/entities/alarm/model/alarmQueryKeys';
-import { AlarmsListResponse } from '@/entities/alarm/model/types';
+import { useReadOneAlarmMutation } from '@/features/alarm-read-one';
 import { useModalStore } from '@/app/store/useModalStore';
 import { AlarmList } from './AlarmList';
 
@@ -36,34 +33,16 @@ export const AlarmPanel = () => {
 };
 
 function AlarmPanelContent() {
-  const queryClient = useQueryClient();
   const { data, isLoading } = useAlarmsQuery(0);
   const { mutate: readAll, isPending } = useReadAllAlarmsMutation();
+  const { mutate: deleteAlarm } = useReadOneAlarmMutation();
 
   const items = data?.items ?? [];
   const hasItems = items.length > 0;
 
-  const handleDelete = useCallback(
-    async (itemId: number) => {
-      try {
-        await alarmApi.readAlarm(itemId);
-        queryClient.setQueryData<AlarmsListResponse>(alarmQueryKeys.list(0), (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            items: oldData.items.filter((item) => item.id !== itemId),
-          };
-        });
-        // 헤더의 빨간 점도 업데이트
-        const updatedData = queryClient.getQueryData<AlarmsListResponse>(alarmQueryKeys.list(0));
-        const hasUnread = updatedData?.items?.some((item) => !item.isRead) ?? false;
-        queryClient.setQueryData(alarmQueryKeys.hasUnread(), { hasUnread });
-      } catch (error) {
-        console.error('Failed to read alarm:', error);
-      }
-    },
-    [queryClient]
-  );
+  const handleDelete = (itemId: number) => {
+    deleteAlarm(itemId);
+  };
 
   return (
     <div className="w-96 flex flex-col max-h-[480px]">
