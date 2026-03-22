@@ -8,12 +8,10 @@ import { alarmApi } from '@/entities/alarm/api/alarmApi';
 import { alarmQueryKeys } from '@/entities/alarm/model/alarmQueryKeys';
 
 const PostDetailWidget = dynamic(
-  () => import('@/widgets/post-detail/ui/PostDetailWidget').then(m => ({ default: m.PostDetailWidget })),
-  { ssr: false }
+  () => import('@/widgets/post-detail/ui/PostDetailWidget').then(m => ({ default: m.PostDetailWidget }))
 );
 const PostCommentsWidget = dynamic(
-  () => import('@/widgets/post-comments/ui/PostCommentsWidget').then(m => ({ default: m.PostCommentsWidget })),
-  { ssr: false }
+  () => import('@/widgets/post-comments/ui/PostCommentsWidget').then(m => ({ default: m.PostCommentsWidget }))
 );
 
 export function PostDetailPageClient({ postId }: { postId: string }) {

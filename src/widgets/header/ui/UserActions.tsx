@@ -10,7 +10,7 @@ import { AlarmBell } from './AlarmBell';
 import { useLoginRequired } from '@/shared/lib/hooks/useLoginRequired';
 
 export const UserActions = () => {
-  const { data: user } = useAuth();
+  const { data: user, isLoading } = useAuth();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { checkAuth } = useLoginRequired();
@@ -26,7 +26,9 @@ export const UserActions = () => {
 
   return (
     <div className="flex items-center gap-8">
-      {user ? (
+      {isLoading ? (
+        <div className="w-12 h-6 max-[340px]:hidden" />
+      ) : user ? (
         <button
           onClick={handleLogout}
           className="font-bold leading-none hover:text-blue-600 cursor-pointer max-[380px]:hidden"
