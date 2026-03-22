@@ -23,7 +23,7 @@ export function PostDetailHeader({
   return (
     <div className="border-b pb-6 mb-6">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
-      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-gray-500">
+      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
         <div className="flex flex-wrap items-center gap-3">
           <span className="whitespace-nowrap">{writer}</span>
           <RelativeTime isoString={createdAt} />
