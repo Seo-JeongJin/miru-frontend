@@ -43,7 +43,7 @@ export function DeletePostButton({ postId }: DeletePostButtonProps) {
   };
 
   return (
-    <Button variant="ghost" size="sm" className="cursor-pointer hover:bg-primary/10 hover:text-primary" disabled={isPending} onClick={handleClick}>
+    <Button variant="ghost" size="sm" className="cursor-pointer hover:bg-primary/10 hover:text-primary !px-0" disabled={isPending} onClick={handleClick}>
       삭제
     </Button>
   );

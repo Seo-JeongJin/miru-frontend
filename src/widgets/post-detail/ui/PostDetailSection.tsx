@@ -35,7 +35,7 @@ export function PostDetailSection({ post, postId }: PostDetailSectionProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                className="cursor-pointer hover:bg-primary/10 hover:text-primary !px-0"
                 onClick={() => router.push(`/boards/${postId}/edit`)}
               >
                 수정
