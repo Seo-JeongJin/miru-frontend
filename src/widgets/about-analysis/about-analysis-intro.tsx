@@ -24,7 +24,7 @@ export function AboutAnalysisIntro() {
           {/* 카드 영역 */}
           <div className="grid gap-6 md:grid-cols-2">
             <AboutAnalysisInfoCard
-              iconSrc="/assets/icons/about-target.png"
+              iconSrc="/assets/icons/about-target.webp"
               iconAlt="일본 취업의 본질 아이콘"
               title="일본 취업의 본질"
               description="일본 기업은 무엇을 보고 있을까?
@@ -34,7 +34,7 @@ export function AboutAnalysisIntro() {
               무엇을 할 수 있는가보다,어떤 사람인가를 깊이 바라봅니다."
             />
             <AboutAnalysisInfoCard
-              iconSrc="/assets/icons/about-chat.png"
+              iconSrc="/assets/icons/about-chat.webp"
               iconAlt="면접의 진짜 목적 아이콘"
               title="면접의 진짜 목적"
               description="면접은 시험이 아닙니다

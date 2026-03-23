@@ -42,7 +42,7 @@ export const GoogleButton = memo(function GoogleButton({
     <BaseButton
       onClick={onClick}
       className="bg-white border border-gray-400"
-      icon="/assets/icons/google-logo.png"
+      icon="/assets/icons/google-logo.webp"
     >
       구글 로그인
     </BaseButton>

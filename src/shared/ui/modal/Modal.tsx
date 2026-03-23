@@ -30,7 +30,7 @@ export const Modal = ({
   description,
   buttons,
   children,
-  iconSrc = '/assets/icons/warning.png',
+  iconSrc = '/assets/icons/warning.webp',
   onBackdropClick,
 }: ModalProps) => {
   if (!isOpen) return null;

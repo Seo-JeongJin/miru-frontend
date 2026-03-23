@@ -13,7 +13,7 @@ export function AboutAnalysisCta() {
           {/* 별 아이콘 */}
           <div className="relative w-12 h-12 md:w-16 md:h-16">
             <Image
-              src="/assets/icons/about-star.png"
+              src="/assets/icons/about-star.webp"
               alt="별 아이콘"
               fill
               className="object-contain"

@@ -5,7 +5,7 @@ export const Logo = () => {
   return (
     <Link href="/analysis">
       <Image
-        src="/miru_logo.png" // public/logo.png를 가리킵니다.
+        src="/miru_logo.webp" // public/logo.webp를 가리킵니다.
         alt="MIRU 로고"
         width={120}
         height={40}

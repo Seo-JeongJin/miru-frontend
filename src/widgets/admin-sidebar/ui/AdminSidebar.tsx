@@ -18,7 +18,7 @@ export function AdminSidebar() {
       <div className="px-6 py-6">
         <Link href="/analysis">
           <Image
-            src="/miru_logo.png"
+            src="/miru_logo.webp"
             alt="MIRU 로고"
             width={200}
             height={68}
