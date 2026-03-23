@@ -38,10 +38,10 @@ export default function RootLayout({
             <AuthProvider>
               <Header />
               <main className="min-h-screen">{children}</main>
+              <Footer />
               <GlobalModal />
             </AuthProvider>
           </Suspense>
-          <Footer />
         </TanStackProvider>
       </body>
     </html>
