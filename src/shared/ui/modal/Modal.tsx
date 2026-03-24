@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 export interface ModalButton {
@@ -57,12 +56,12 @@ export const Modal = ({
       >
         {iconSrc && (
           <div className="mb-4">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={iconSrc}
               alt=""
               width={120}
               height={120}
-              priority
             />
           </div>
         )}
