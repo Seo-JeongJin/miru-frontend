@@ -21,6 +21,7 @@ export function PostWriteForm() {
   const { handleError } = useApiErrorModal();
 
   const handleSubmit = () => {
+    if (isPending) return;
     if (!title || !content) {
       openModal({
         title: '입력 확인',
