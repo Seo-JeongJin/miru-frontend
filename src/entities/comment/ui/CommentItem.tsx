@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/shared/ui/card';
 function CommentContent({ text }: { text: string }) {
   const parts = text.split(/(@\S+)/g);
   return (
-    <p className="text-sm text-gray-700 leading-relaxed">
+    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
       {parts.map((part, i) =>
         part.startsWith('@') ? (
           <span key={i} className="text-primary font-medium">{part}</span>
