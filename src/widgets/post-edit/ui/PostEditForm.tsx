@@ -63,6 +63,7 @@ function PostEditFormContent({ postId }: { postId: string }) {
   const { mutate: editPost, isPending } = useEditPostMutation(postId);
 
   const handleSubmit = () => {
+    if (isPending) return;
     if (!title || !content) {
       openModal({
         title: '입력 확인',

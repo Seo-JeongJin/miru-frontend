@@ -20,6 +20,7 @@ export function InquiryWriteForm() {
   const { mutate: createInquiryMutation, isPending } = useCreateInquiryMutation();
 
   const handleSubmit = () => {
+    if (isPending) return;
     if (!title || !content) {
       openModal({
         title: '입력 확인',
