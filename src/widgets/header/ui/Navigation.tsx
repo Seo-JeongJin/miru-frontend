@@ -16,12 +16,7 @@ export const Navigation = () => {
       <NavLink href="/boards">커뮤니티</NavLink>
       <NavLink href="/about">자기분석이란?</NavLink>
       <NavLink href="/tips">자기분석 팁</NavLink>
-      <button
-        onClick={() => checkAuth(() => router.push('/inquiries'))}
-        className="font-bold leading-none hover:text-blue-600 transition-colors cursor-pointer"
-      >
-        1:1 문의
-      </button>
+      <InquiryNavLink />
       <AdminNavLink />
     </nav>
   );
@@ -46,5 +41,22 @@ const NavLink = ({
     >
       {children}
     </Link>
+  );
+};
+
+const InquiryNavLink = () => {
+  const router = useRouter();
+  const { checkAuth } = useLoginRequired();
+  const isActive = useIsActive('/inquiries');
+
+  return (
+    <button
+      onClick={() => checkAuth(() => router.push('/inquiries'))}
+      className={`font-bold leading-none transition-colors cursor-pointer ${
+        isActive ? 'text-primary' : 'hover:text-blue-600'
+      }`}
+    >
+      1:1 문의
+    </button>
   );
 };
